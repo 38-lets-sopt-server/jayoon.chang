@@ -5,6 +5,7 @@ import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.repository.PostRepository;
 
+import javax.swing.event.TreeWillExpandListener;
 import java.util.List;
 
 public class PostService {
@@ -24,25 +25,43 @@ public class PostService {
         return new CreatePostResponse(post.getId(), "게시글 등록 완료!");
     }
 
-    // READ - 전체 📝 과제
+    // READ - 전체
     public List<CreatePostResponse> getAllPosts() {
-        // TODO
-        return null;
+        List<Post> posts = postRepository.findAll();
+
+        return posts.stream().map(post -> new CreatePostResponse(post.getId(), post.getInfo())).toList();
     }
 
-    // READ - 단건 📝 과제
-    public CreatePostRequest getPost(Long id) {
-        // TODO
-        return null;
+    // READ - 단건
+    public CreatePostResponse getPost(Long id) {
+        Post post = postRepository.findById(id);
+
+        if(post==null){
+            throw new IllegalArgumentException("게시글 없음!");
+        }
+
+        return new CreatePostResponse(post.getId(), post.getInfo());
     }
 
-    // UPDATE 📝 과제
+    // UPDATE
     public void updatePost(Long id, String newTitle, String newContent) {
-        // TODO
+        Post post = postRepository.findById(id);
+
+        if(post==null){
+            throw new IllegalArgumentException("게시글 없음!");
+        }
+
+        post.update(newTitle, newContent);
     }
 
-    // DELETE 📝 과제
+    // DELETE
     public void deletePost(Long id) {
-        // TODO
+        Post post = postRepository.findById(id);
+
+        if(post==null){
+            throw new IllegalArgumentException("게시글 없음!");
+        }
+
+        postRepository.delete(post);
     }
 }
