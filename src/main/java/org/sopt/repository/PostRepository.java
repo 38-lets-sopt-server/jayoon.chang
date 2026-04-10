@@ -14,6 +14,23 @@ public class PostRepository {
         return post;
     }
 
+    public List<Post> findAll(){
+        return postList;
+    }
+
+    public Post findById(Long id){
+        for(Post post : postList){
+            if(post.getId().equals(id)){
+                return post;
+            }
+        }
+        return null;
+    }
+
+    public void delete(Post post){
+        postList.remove(post);
+    }
+
     public Long generateId() {
         return nextId++;
     }
