@@ -5,7 +5,6 @@ import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.repository.PostRepository;
 
-import javax.swing.event.TreeWillExpandListener;
 import java.util.List;
 
 public class PostService {
