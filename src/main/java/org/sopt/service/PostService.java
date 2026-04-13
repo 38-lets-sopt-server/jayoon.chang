@@ -8,12 +8,16 @@ import org.sopt.repository.PostRepository;
 import java.util.List;
 
 public class PostService {
+    private static final int MAX_TITLE_LENGTH = 50;
     private final PostRepository postRepository = new PostRepository();
 
     // CREATE
     public CreatePostResponse createPost(CreatePostRequest request) {
         if (request.title == null || request.title.isBlank()) {
             throw new IllegalArgumentException("제목은 필수입니다!");
+        }
+        if (request.title.length() > MAX_TITLE_LENGTH) {
+            throw new IllegalArgumentException("제목은 50자 이하여야 합니다!");
         }
         if (request.content == null || request.content.isBlank()) {
             throw new IllegalArgumentException("내용은 필수입니다!");
@@ -48,6 +52,15 @@ public class PostService {
 
         if(post==null){
             throw new IllegalArgumentException("게시글 없음!");
+        }
+        if(newTitle == null || newTitle.isBlank()){
+            throw new IllegalArgumentException("제목은 필수입니다!");
+        }
+        if(newTitle.length() > MAX_TITLE_LENGTH){
+            throw new IllegalArgumentException("제목은 50자 이하여야 합니다!");
+        }
+        if(newContent == null || newContent.isBlank()){
+            throw new IllegalArgumentException("내용은 필수입니다!");
         }
 
         post.update(newTitle, newContent);
