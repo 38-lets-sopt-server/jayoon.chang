@@ -4,6 +4,7 @@ import org.sopt.domain.Post;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
+import org.sopt.exception.PostNotFoundException;
 import org.sopt.repository.PostRepository;
 
 import java.time.LocalDateTime;
@@ -47,7 +48,7 @@ public class PostService {
     // READ - 단건
     public PostResponse getPost(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 없음!"));
+                .orElseThrow(() -> new PostNotFoundException(id));
 
         return new PostResponse(
                 post.getId(),
@@ -60,7 +61,7 @@ public class PostService {
     // UPDATE
     public void updatePost(Long id, String newTitle, String newContent) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 없음!"));
+                .orElseThrow(() -> new PostNotFoundException(id));
 
         if(newTitle == null || newTitle.isBlank()){
             throw new IllegalArgumentException("제목은 필수입니다!");
@@ -78,7 +79,7 @@ public class PostService {
     // DELETE
     public void deletePost(Long id) {
         postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 없음!"));
+                .orElseThrow(() -> new PostNotFoundException(id));
 
         postRepository.delete(id);
     }
