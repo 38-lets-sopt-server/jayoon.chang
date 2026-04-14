@@ -6,6 +6,7 @@ import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.repository.PostRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class PostService {
@@ -23,7 +24,7 @@ public class PostService {
         if (request.content == null || request.content.isBlank()) {
             throw new IllegalArgumentException("내용은 필수입니다!");
         }
-        String createdAt = java.time.LocalDateTime.now().toString();
+        LocalDateTime createdAt = LocalDateTime.now();
         Post post = new Post(postRepository.generateId(), request.title, request.content, request.author, createdAt);
         postRepository.save(post);
         return new CreatePostResponse(post.getId(), "게시글 등록 완료!");
@@ -38,7 +39,7 @@ public class PostService {
                 post.getTitle(),
                 post.getContent(),
                 post.getAuthor(),
-                post.getCreatedAt()
+                post.getCreatedAt().toString()
                 ))
                 .toList();
     }
@@ -48,7 +49,12 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음!"));
 
-        return new PostResponse(post.getId(), post.getTitle(), post.getContent(), post.getAuthor(), post.getCreatedAt());
+        return new PostResponse(
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                post.getAuthor(),
+                post.getCreatedAt().toString());
     }
 
     // UPDATE
