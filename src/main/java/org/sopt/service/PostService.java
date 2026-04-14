@@ -6,25 +6,17 @@ import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.exception.PostNotFoundException;
 import org.sopt.repository.PostRepository;
+import org.sopt.validator.PostValidator;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class PostService {
-    private static final int MAX_TITLE_LENGTH = 50;
     private final PostRepository postRepository = new PostRepository();
 
     // CREATE
     public CreatePostResponse createPost(CreatePostRequest request) {
-        if (request.title == null || request.title.isBlank()) {
-            throw new IllegalArgumentException("제목은 필수입니다!");
-        }
-        if (request.title.length() > MAX_TITLE_LENGTH) {
-            throw new IllegalArgumentException("제목은 50자 이하여야 합니다!");
-        }
-        if (request.content == null || request.content.isBlank()) {
-            throw new IllegalArgumentException("내용은 필수입니다!");
-        }
+        PostValidator.validate(request.title, request.content);
         LocalDateTime createdAt = LocalDateTime.now();
         Post post = new Post(postRepository.generateId(), request.title, request.content, request.author, createdAt);
         postRepository.save(post);
@@ -63,16 +55,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
 
-        if(newTitle == null || newTitle.isBlank()){
-            throw new IllegalArgumentException("제목은 필수입니다!");
-        }
-        if(newTitle.length() > MAX_TITLE_LENGTH){
-            throw new IllegalArgumentException("제목은 50자 이하여야 합니다!");
-        }
-        if(newContent == null || newContent.isBlank()){
-            throw new IllegalArgumentException("내용은 필수입니다!");
-        }
-
+        PostValidator.validate(newTitle, newContent);
         post.update(newTitle, newContent);
     }
 
