@@ -37,22 +37,17 @@ public class PostService {
 
     // READ - 단건
     public CreatePostResponse getPost(Long id) {
-        Post post = postRepository.findById(id);
-
-        if(post==null){
-            throw new IllegalArgumentException("게시글 없음!");
-        }
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 없음!"));
 
         return new CreatePostResponse(post.getId(), post.getInfo());
     }
 
     // UPDATE
     public void updatePost(Long id, String newTitle, String newContent) {
-        Post post = postRepository.findById(id);
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 없음!"));
 
-        if(post==null){
-            throw new IllegalArgumentException("게시글 없음!");
-        }
         if(newTitle == null || newTitle.isBlank()){
             throw new IllegalArgumentException("제목은 필수입니다!");
         }
@@ -68,11 +63,8 @@ public class PostService {
 
     // DELETE
     public void deletePost(Long id) {
-        Post post = postRepository.findById(id);
-
-        if(post==null){
-            throw new IllegalArgumentException("게시글 없음!");
-        }
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 없음!"));
 
         postRepository.delete(post);
     }
