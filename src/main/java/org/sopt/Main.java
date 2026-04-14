@@ -3,6 +3,7 @@ package org.sopt;
 import org.sopt.controller.PostController;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
+import org.sopt.dto.response.PostResponse;
 
 import java.util.List;
 import java.util.Scanner;
@@ -38,11 +39,11 @@ public class Main {
                     CreatePostResponse response = postController.createPost(
                             new CreatePostRequest(title, content, author)
                     );
-                    System.out.println(response.message);
+                    System.out.println(response.getMessage());
                     break;
 
                 case 2:
-                    List<CreatePostResponse> posts = postController.getAllPosts();
+                    List<PostResponse> posts = postController.getAllPosts();
                     if (posts.isEmpty()) {
                         System.out.println("등록된 게시글이 없습니다.");
                     } else {
@@ -52,7 +53,7 @@ public class Main {
 
                 case 3:
                     System.out.print("조회할 게시글 ID: ");
-                    CreatePostResponse post = postController.getPost(scanner.nextLong());
+                    PostResponse post = postController.getPost(scanner.nextLong());
                     scanner.nextLine();
                     if (post != null) System.out.println(post);
                     break;

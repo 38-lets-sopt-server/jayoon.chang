@@ -2,6 +2,7 @@ package org.sopt.controller;
 
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
+import org.sopt.dto.response.PostResponse;
 import org.sopt.service.PostService;
 
 import java.util.List;
@@ -19,12 +20,12 @@ public class PostController {
     }
 
     // GET /posts
-    public List<CreatePostResponse> getAllPosts() {
+    public List<PostResponse> getAllPosts() {
         return postService.getAllPosts();
     }
 
     // GET /posts/{id}
-    public CreatePostResponse getPost(Long id) {
+    public PostResponse getPost(Long id) {
         try{
             return postService.getPost(id);
         } catch (IllegalArgumentException e){

@@ -3,6 +3,7 @@ package org.sopt.service;
 import org.sopt.domain.Post;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
+import org.sopt.dto.response.PostResponse;
 import org.sopt.repository.PostRepository;
 
 import java.util.List;
@@ -29,18 +30,25 @@ public class PostService {
     }
 
     // READ - 전체
-    public List<CreatePostResponse> getAllPosts() {
+    public List<PostResponse> getAllPosts() {
         List<Post> posts = postRepository.findAll();
 
-        return posts.stream().map(post -> new CreatePostResponse(post.getId(), post.getInfo())).toList();
+        return posts.stream().map(post -> new PostResponse(
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                post.getAuthor(),
+                post.getCreatedAt()
+                ))
+                .toList();
     }
 
     // READ - 단건
-    public CreatePostResponse getPost(Long id) {
+    public PostResponse getPost(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음!"));
 
-        return new CreatePostResponse(post.getId(), post.getInfo());
+        return new PostResponse(post.getId(), post.getTitle(), post.getContent(), post.getAuthor(), post.getCreatedAt());
     }
 
     // UPDATE
