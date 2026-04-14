@@ -27,8 +27,4 @@ public class Post {
         this.title = title;
         this.content = content;
     }
-
-    public String getInfo() {
-        return "[" + id + "] " + title + " - " + author + " (" + createdAt + ")\n" + content;
-    }
 }
