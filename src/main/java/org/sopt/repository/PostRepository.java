@@ -28,8 +28,8 @@ public class PostRepository {
         return Optional.empty();
     }
 
-    public void delete(Post post){
-        postList.remove(post);
+    public void delete(Long id){
+        postList.removeIf(post->post.getId().equals(id));
     }
 
     public Long generateId() {

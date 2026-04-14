@@ -63,9 +63,9 @@ public class PostService {
 
     // DELETE
     public void deletePost(Long id) {
-        Post post = postRepository.findById(id)
+        postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음!"));
 
-        postRepository.delete(post);
+        postRepository.delete(id);
     }
 }
