@@ -1,6 +1,7 @@
 package org.sopt.controller;
 
 import org.sopt.dto.request.CreatePostRequest;
+import org.sopt.dto.request.UpdatePostRequest;
 import org.sopt.dto.response.ApiResponse;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
@@ -48,10 +49,10 @@ public class PostController {
     }
 
     @PatchMapping("/{id}")
-    public ApiResponse<Void> updatePost( @PathVariable Long id,
-                                         @RequestBody CreatePostRequest request) {
+    public ApiResponse<Void> updatePost(@PathVariable Long id,
+                                        @RequestBody UpdatePostRequest request) {
         try{
-            postService.updatePost(id, request.title(), request.content());
+            postService.updatePost(id, request);
             return new ApiResponse<>(true, "게시글 수정 성공!", null);
         } catch(PostNotFoundException e){
             return new ApiResponse<>(false, "게시글 수정 실패 : " + e.getMessage(), null);

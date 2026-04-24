@@ -2,6 +2,7 @@ package org.sopt.service;
 
 import org.sopt.domain.Post;
 import org.sopt.dto.request.CreatePostRequest;
+import org.sopt.dto.request.UpdatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.exception.PostNotFoundException;
@@ -57,12 +58,12 @@ public class PostService {
     }
 
     // UPDATE
-    public void updatePost(Long id, String newTitle, String newContent) {
+    public void updatePost(Long id, UpdatePostRequest request) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
 
-        PostValidator.validate(newTitle, newContent);
-        post.update(newTitle, newContent);
+        PostValidator.validate(request.title(), request.content());
+        post.update(request.title(), request.content());
     }
 
     // DELETE
