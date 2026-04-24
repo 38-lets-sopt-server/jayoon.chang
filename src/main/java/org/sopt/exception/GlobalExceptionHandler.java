@@ -1,6 +1,5 @@
 package org.sopt.exception;
 
-import org.sopt.dto.response.ApiResponse;
 import org.sopt.dto.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
