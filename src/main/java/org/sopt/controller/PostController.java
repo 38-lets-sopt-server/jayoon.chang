@@ -6,14 +6,27 @@ import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.exception.PostNotFoundException;
 import org.sopt.service.PostService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/posts")
 public class PostController {
-    private final PostService postService = new PostService();
+    private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     // POST /posts
-    public ApiResponse<CreatePostResponse> createPost(CreatePostRequest request) {
+    @PostMapping
+    public ApiResponse<CreatePostResponse> createPost(
+            @RequestBody CreatePostRequest request
+    ) {
         try {
             CreatePostResponse response = postService.createPost(request);
             return new ApiResponse<>(true, "게시글 생성 성공!", response);
