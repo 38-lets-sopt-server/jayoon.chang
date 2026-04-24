@@ -16,9 +16,9 @@ public class PostService {
 
     // CREATE
     public CreatePostResponse createPost(CreatePostRequest request) {
-        PostValidator.validate(request.title, request.content);
+        PostValidator.validate(request.title(), request.content());
         LocalDateTime createdAt = LocalDateTime.now();
-        Post post = new Post(postRepository.generateId(), request.title, request.content, request.author, createdAt);
+        Post post = new Post(postRepository.generateId(), request.title(), request.content(), request.author(), createdAt);
         postRepository.save(post);
         return new CreatePostResponse(post.getId(), "게시글 등록 완료!");
     }

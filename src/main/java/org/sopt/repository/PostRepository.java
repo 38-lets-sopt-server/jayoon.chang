@@ -16,7 +16,7 @@ public class PostRepository {
     }
 
     public List<Post> findAll(){
-        return postList;
+        return List.copyOf(postList);
     }
 
     public Optional<Post> findById(Long id){
