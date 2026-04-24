@@ -24,48 +24,51 @@ public class PostController {
     public ApiResponse<CreatePostResponse> createPost(
             @RequestBody CreatePostRequest request
     ) {
-        try {
-            CreatePostResponse response = postService.createPost(request);
-            return new ApiResponse<>(true, "게시글 생성 성공!", response);
-        } catch (IllegalArgumentException e) {
-            return new ApiResponse<>(false, "게시글 생성 실패 : " + e.getMessage(), null);
-        }
+        return new ApiResponse<>(
+                true,
+                "게시글 생성 성공!",
+                postService.createPost(request)
+        );
     }
 
     @GetMapping
     public ApiResponse<List<PostResponse>> getAllPosts() {
-        List<PostResponse> response = postService.getAllPosts();
-        return new ApiResponse<>(true, "게시글 전체 조회 성공!", response);
+        return new ApiResponse<>(
+                true,
+                "게시글 전체 조회 성공!",
+                postService.getAllPosts()
+        );
     }
 
     @GetMapping("/{id}")
     public ApiResponse<PostResponse> getPost(@PathVariable Long id) {
-        try{
-            PostResponse response = postService.getPost(id);
-            return new ApiResponse<>(true, "게시글 조회 성공!", response);
-        } catch (PostNotFoundException e){
-            return new ApiResponse<>(false, "게시글 조회 실패 : " + e.getMessage(), null);
-        }
+        return new ApiResponse<>(
+                true,
+                "게시글 조회 성공!",
+                postService.getPost(id)
+        );
     }
 
     @PatchMapping("/{id}")
     public ApiResponse<Void> updatePost(@PathVariable Long id,
                                         @RequestBody UpdatePostRequest request) {
-        try{
-            postService.updatePost(id, request);
-            return new ApiResponse<>(true, "게시글 수정 성공!", null);
-        } catch(PostNotFoundException e){
-            return new ApiResponse<>(false, "게시글 수정 실패 : " + e.getMessage(), null);
-        }
+        postService.updatePost(id, request);
+
+        return new ApiResponse<>(
+                true,
+                "게시글 수정 성공!",
+                null
+        );
     }
 
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deletePost(@PathVariable Long id) {
-        try {
-            postService.deletePost(id);
-            return new ApiResponse<>(true, "게시글 삭제 성공!", null);
-        } catch (PostNotFoundException e){
-            return new ApiResponse<>(false, "게시글 삭제 실패 : " + e.getMessage(), null);
-        }
+        postService.deletePost(id);
+
+        return new ApiResponse<>(
+                true,
+                "게시글 삭제 성공!",
+                null
+        );
     }
 }
