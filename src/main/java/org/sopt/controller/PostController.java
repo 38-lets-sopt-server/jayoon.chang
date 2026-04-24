@@ -25,34 +25,21 @@ public class PostController {
     public ResponseEntity<ApiResponse<CreatePostResponse>> createPost(
             @RequestBody CreatePostRequest request
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-            new ApiResponse<>(
-                true,
-                "게시글 생성 성공!",
-                postService.createPost(request)
-            )
-        );
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("게시글 생성 성공!", postService.createPost(request)));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<PostResponse>>> getAllPosts() {
         return ResponseEntity.ok(
-            new ApiResponse<>(
-                true,
-                "게시글 전체 조회 성공!",
-                postService.getAllPosts()
-            )
+           ApiResponse.success("게시글 전체 조회 성공!", postService.getAllPosts())
         );
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<PostResponse>> getPost(@PathVariable Long id) {
         return ResponseEntity.ok(
-            new ApiResponse<>(
-                true,
-               "게시글 조회 성공!",
-                postService.getPost(id)
-            )
+            ApiResponse.success("게시글 조회 성공!", postService.getPost(id))
         );
     }
 
@@ -62,11 +49,7 @@ public class PostController {
         postService.updatePost(id, request);
 
         return ResponseEntity.ok(
-            new ApiResponse<>(
-            true,
-            "게시글 수정 성공!",
-            null
-            )
+            ApiResponse.success("게시글 수정 성공!", null)
         );
     }
 
