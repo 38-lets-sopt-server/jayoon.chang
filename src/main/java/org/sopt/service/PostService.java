@@ -34,14 +34,7 @@ public class PostService {
     public List<PostResponse> getAllPosts() {
         List<Post> posts = postRepository.findAll();
 
-        return posts.stream().map(post -> new PostResponse(
-                post.getId(),
-                post.getTitle(),
-                post.getContent(),
-                post.getAuthor(),
-                post.getCreatedAt().toString()
-                ))
-                .toList();
+        return posts.stream().map(PostResponse::from).toList();
     }
 
     // READ - 단건
@@ -49,12 +42,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
 
-        return new PostResponse(
-                post.getId(),
-                post.getTitle(),
-                post.getContent(),
-                post.getAuthor(),
-                post.getCreatedAt().toString());
+        return PostResponse.from(post);
     }
 
     // UPDATE
