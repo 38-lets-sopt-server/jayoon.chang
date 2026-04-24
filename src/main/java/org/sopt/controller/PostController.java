@@ -74,12 +74,6 @@ public class PostController {
     public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long id) {
         postService.deletePost(id);
 
-        return ResponseEntity.ok(
-            new ApiResponse<>(
-            true,
-            "게시글 삭제 성공!",
-            null
-            )
-        );
+        return ResponseEntity.noContent().build();
     }
 }
