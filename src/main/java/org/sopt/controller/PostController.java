@@ -6,10 +6,7 @@ import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.exception.PostNotFoundException;
 import org.sopt.service.PostService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +19,6 @@ public class PostController {
         this.postService = postService;
     }
 
-    // POST /posts
     @PostMapping
     public ApiResponse<CreatePostResponse> createPost(
             @RequestBody CreatePostRequest request
@@ -35,14 +31,14 @@ public class PostController {
         }
     }
 
-    // GET /posts
+    @GetMapping
     public ApiResponse<List<PostResponse>> getAllPosts() {
         List<PostResponse> response = postService.getAllPosts();
         return new ApiResponse<>(true, "게시글 전체 조회 성공!", response);
     }
 
-    // GET /posts/{id}
-    public ApiResponse<PostResponse> getPost(Long id) {
+    @GetMapping("/{id}")
+    public ApiResponse<PostResponse> getPost(@PathVariable Long id) {
         try{
             PostResponse response = postService.getPost(id);
             return new ApiResponse<>(true, "게시글 조회 성공!", response);
@@ -51,18 +47,19 @@ public class PostController {
         }
     }
 
-    // PUT /posts/{id}
-    public ApiResponse<Void> updatePost(Long id, String newTitle, String newContent) {
+    @PatchMapping("/{id}")
+    public ApiResponse<Void> updatePost( @PathVariable Long id,
+                                         @RequestBody CreatePostRequest request) {
         try{
-            postService.updatePost(id, newTitle, newContent);
+            postService.updatePost(id, request.title(), request.content());
             return new ApiResponse<>(true, "게시글 수정 성공!", null);
         } catch(PostNotFoundException e){
             return new ApiResponse<>(false, "게시글 수정 실패 : " + e.getMessage(), null);
         }
     }
 
-    // DELETE /posts/{id}
-    public ApiResponse<Void> deletePost(Long id) {
+    @DeleteMapping("/{id}")
+    public ApiResponse<Void> deletePost(@PathVariable Long id) {
         try {
             postService.deletePost(id);
             return new ApiResponse<>(true, "게시글 삭제 성공!", null);
