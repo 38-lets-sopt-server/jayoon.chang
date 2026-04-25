@@ -9,7 +9,6 @@ public record PostResponse(
         Long id,
         String title,
         String content,
-        String author,
         String createdAt
 ) {
 
@@ -18,7 +17,6 @@ public record PostResponse(
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
-                post.getAuthor(),
                 post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
         );
     }
