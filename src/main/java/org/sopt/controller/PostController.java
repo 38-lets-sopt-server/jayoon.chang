@@ -1,60 +1,62 @@
 package org.sopt.controller;
 
 import org.sopt.dto.request.CreatePostRequest;
+import org.sopt.dto.request.UpdatePostRequest;
 import org.sopt.dto.response.ApiResponse;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
-import org.sopt.exception.PostNotFoundException;
 import org.sopt.service.PostService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/posts")
 public class PostController {
-    private final PostService postService = new PostService();
+    private final PostService postService;
 
-    // POST /posts
-    public ApiResponse<CreatePostResponse> createPost(CreatePostRequest request) {
-        try {
-            CreatePostResponse response = postService.createPost(request);
-            return new ApiResponse<>(true, "게시글 생성 성공!", response);
-        } catch (IllegalArgumentException e) {
-            return new ApiResponse<>(false, "게시글 생성 실패 : " + e.getMessage(), null);
-        }
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
-    // GET /posts
-    public ApiResponse<List<PostResponse>> getAllPosts() {
-        List<PostResponse> response = postService.getAllPosts();
-        return new ApiResponse<>(true, "게시글 전체 조회 성공!", response);
+    @PostMapping
+    public ResponseEntity<ApiResponse<CreatePostResponse>> createPost(
+            @RequestBody CreatePostRequest request
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("게시글 생성 성공!", postService.createPost(request)));
     }
 
-    // GET /posts/{id}
-    public ApiResponse<PostResponse> getPost(Long id) {
-        try{
-            PostResponse response = postService.getPost(id);
-            return new ApiResponse<>(true, "게시글 조회 성공!", response);
-        } catch (PostNotFoundException e){
-            return new ApiResponse<>(false, "게시글 조회 실패 : " + e.getMessage(), null);
-        }
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<PostResponse>>> getAllPosts() {
+        return ResponseEntity.ok(
+           ApiResponse.success("게시글 전체 조회 성공!", postService.getAllPosts())
+        );
     }
 
-    // PUT /posts/{id}
-    public ApiResponse<Void> updatePost(Long id, String newTitle, String newContent) {
-        try{
-            postService.updatePost(id, newTitle, newContent);
-            return new ApiResponse<>(true, "게시글 수정 성공!", null);
-        } catch(PostNotFoundException e){
-            return new ApiResponse<>(false, "게시글 수정 실패 : " + e.getMessage(), null);
-        }
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<PostResponse>> getPost(@PathVariable Long id) {
+        return ResponseEntity.ok(
+            ApiResponse.success("게시글 조회 성공!", postService.getPost(id))
+        );
     }
 
-    // DELETE /posts/{id}
-    public ApiResponse<Void> deletePost(Long id) {
-        try {
-            postService.deletePost(id);
-            return new ApiResponse<>(true, "게시글 삭제 성공!", null);
-        } catch (PostNotFoundException e){
-            return new ApiResponse<>(false, "게시글 삭제 실패 : " + e.getMessage(), null);
-        }
+    @PatchMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> updatePost(@PathVariable Long id,
+                                        @RequestBody UpdatePostRequest request) {
+        postService.updatePost(id, request);
+
+        return ResponseEntity.ok(
+            ApiResponse.success("게시글 수정 성공!", null)
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+        postService.deletePost(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
