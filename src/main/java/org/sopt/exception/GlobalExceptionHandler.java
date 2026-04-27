@@ -1,6 +1,6 @@
 package org.sopt.exception;
 
-import org.sopt.dto.response.ErrorResponse;
+import org.sopt.dto.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,23 +9,23 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(PostNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlePostNotFound(PostNotFoundException e){
+    public ResponseEntity<ApiResponse<Void>> handlePostNotFound(PostNotFoundException e){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ErrorResponse(e.getErrorCode(), e.getMessage())
+                ApiResponse.failure(e.getErrorCode(), e.getMessage())
         );
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e){
+    public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(IllegalArgumentException e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                new ErrorResponse("INVALID_INPUT", e.getMessage())
+                ApiResponse.failure("INVALID_INPUT", e.getMessage())
         );
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception e){
+    public ResponseEntity<ApiResponse<Void>> handleException(Exception e){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new ErrorResponse("INTERNAL_SERVER_ERROR","서버 내부 오류가 발생했습니다")
+                ApiResponse.failure("INTERNAL_SERVER_ERROR","서버 내부 오류가 발생했습니다")
         );
     }
 
