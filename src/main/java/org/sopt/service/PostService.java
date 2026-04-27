@@ -7,13 +7,13 @@ import org.sopt.dto.request.UpdatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.exception.PostNotFoundException;
+import org.sopt.exception.UserNotFoundException;
 import org.sopt.repository.PostRepository;
 import org.sopt.repository.UserRepository;
 import org.sopt.validator.PostValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,11 +30,11 @@ public class PostService {
     @Transactional
     public CreatePostResponse createPost(CreatePostRequest request) {
         User user = userRepository.findById(request.userId())
-                .orElseThrow(() -> new PostNotFoundException(request.userId()));
+                .orElseThrow(() -> new UserNotFoundException(request.userId()));
 
         PostValidator.validate(request.title(), request.content());
 
-        Post post = new Post(request.title(), request.content(), request.userId());
+        Post post = new Post(request.title(), request.content(), user);
         postRepository.save(post);
         return new CreatePostResponse(post.getId(), "게시글 등록 완료!");
     }
