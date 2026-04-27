@@ -10,8 +10,9 @@ public class Post {
     private String content;   // 목록(미리보기), 상세(전체) 화면 — 내용
     private final String author;    // 목록, 상세 화면 — 글쓴이
     private final LocalDateTime createdAt; // 목록, 상세 화면 — 작성 시각
+    private final BoardType boardType;
 
-    public Post(Long id, String title, String content, String author, LocalDateTime createdAt) {
+    public Post(Long id, String title, String content, String author, LocalDateTime createdAt, BoardType boardType) {
         PostValidator.validate(title, content);
 
         this.id = id;
@@ -19,6 +20,7 @@ public class Post {
         this.content = content;
         this.author = author;
         this.createdAt = createdAt;
+        this.boardType = boardType;
     }
 
     public void update(String title, String content) {
@@ -31,4 +33,5 @@ public class Post {
     public String getContent() { return content; }
     public String getAuthor() { return author; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public BoardType getBoardType() { return boardType; }
 }

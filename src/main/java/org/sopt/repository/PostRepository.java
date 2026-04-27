@@ -1,5 +1,6 @@
 package org.sopt.repository;
 
+import org.sopt.domain.BoardType;
 import org.sopt.domain.Post;
 import org.springframework.stereotype.Repository;
 
@@ -11,9 +12,11 @@ public interface PostRepository {
 
     Post save(Post post);
 
-    List<Post> findAll();
-
     List<Post> findAllByPage(int page, int size);
+
+    List<Post> findByBoardType(BoardType boardType);
+
+    List<Post> findByBoardTypeAndPage(BoardType boardType, int page, int size);
 
     int countAll();
 

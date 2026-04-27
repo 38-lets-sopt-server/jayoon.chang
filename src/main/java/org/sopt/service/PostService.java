@@ -1,5 +1,6 @@
 package org.sopt.service;
 
+import org.sopt.domain.BoardType;
 import org.sopt.domain.Post;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.request.UpdatePostRequest;
@@ -24,7 +25,7 @@ public class PostService {
     public CreatePostResponse createPost(CreatePostRequest request) {
         LocalDateTime createdAt = LocalDateTime.now();
 
-        Post post = new Post(postRepository.generateId(), request.title(), request.content(), request.author(), createdAt);
+        Post post = new Post(postRepository.generateId(), request.title(), request.content(), request.author(), createdAt, request.boardType());
 
         postRepository.save(post);
 
@@ -32,8 +33,14 @@ public class PostService {
     }
 
     // READ - 전체
-    public List<PostResponse> getAllPosts(int page, int size) {
-        List<Post> posts = postRepository.findAllByPage(page, size);
+    public List<PostResponse> getAllPosts(BoardType boardType, int page, int size) {
+        List<Post> posts;
+
+        if (boardType == null){
+            posts = postRepository.findAllByPage(page, size);
+        } else {
+            posts = postRepository.findByBoardTypeAndPage(boardType, page, size);
+        }
 
         return posts.stream().map(PostResponse::from).toList();
     }

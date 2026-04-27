@@ -1,5 +1,6 @@
 package org.sopt.controller;
 
+import org.sopt.domain.BoardType;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.request.UpdatePostRequest;
 import org.sopt.dto.response.ApiResponse;
@@ -31,11 +32,12 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<PostResponse>>> getAllPosts(
+            @RequestParam(required = false)BoardType boardType,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         return ResponseEntity.ok(
-           ApiResponse.success("게시글 전체 조회 성공!", postService.getAllPosts(page, size))
+           ApiResponse.success("게시글 전체 조회 성공!", postService.getAllPosts(boardType, page, size))
         );
     }
 
