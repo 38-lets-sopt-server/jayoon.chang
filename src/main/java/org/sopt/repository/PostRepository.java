@@ -34,4 +34,18 @@ public class PostRepository {
     public Long generateId() {
         return nextId++;
     }
+
+    // pagination
+    public List<Post> findAllByPage(int page, int size){
+        int start = page * size;
+        int end = Math.min(start + size, postList.size());
+
+        if (start >= postList.size()){
+            return new ArrayList<>();
+        }
+
+        return postList.subList(start, end);
+    }
+
+    public int countAll(){ return postList.size(); }
 }

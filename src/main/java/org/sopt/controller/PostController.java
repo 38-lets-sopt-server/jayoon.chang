@@ -30,9 +30,12 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<PostResponse>>> getAllPosts() {
+    public ResponseEntity<ApiResponse<List<PostResponse>>> getAllPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
         return ResponseEntity.ok(
-           ApiResponse.success("게시글 전체 조회 성공!", postService.getAllPosts())
+           ApiResponse.success("게시글 전체 조회 성공!", postService.getAllPosts(page, size))
         );
     }
 

@@ -32,8 +32,8 @@ public class PostService {
     }
 
     // READ - 전체
-    public List<PostResponse> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
+    public List<PostResponse> getAllPosts(int page, int size) {
+        List<Post> posts = postRepository.findAllByPage(page, size);
 
         return posts.stream().map(PostResponse::from).toList();
     }
