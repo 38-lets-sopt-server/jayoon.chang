@@ -7,7 +7,6 @@ import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.exception.PostNotFoundException;
 import org.sopt.repository.PostRepository;
-import org.sopt.validator.PostValidator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
