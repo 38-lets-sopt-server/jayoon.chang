@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/posts")
 public class PostController {
+
     private final PostService postService;
 
     public PostController(PostService postService) {
@@ -26,6 +27,7 @@ public class PostController {
     public ResponseEntity<ApiResponse<CreatePostResponse>> createPost(
             @RequestBody CreatePostRequest request
     ) {
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success("게시글 생성 성공!", postService.createPost(request)));
     }
@@ -36,6 +38,7 @@ public class PostController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
+
         return ResponseEntity.ok(
            ApiResponse.success("게시글 전체 조회 성공!", postService.getAllPosts(boardType, page, size))
         );
@@ -43,6 +46,7 @@ public class PostController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<PostResponse>> getPost(@PathVariable Long id) {
+
         return ResponseEntity.ok(
             ApiResponse.success("게시글 조회 성공!", postService.getPost(id))
         );
@@ -51,6 +55,7 @@ public class PostController {
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> updatePost(@PathVariable Long id,
                                         @RequestBody UpdatePostRequest request) {
+
         postService.updatePost(id, request);
 
         return ResponseEntity.ok(
@@ -60,6 +65,7 @@ public class PostController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long id) {
+
         postService.deletePost(id);
 
         return ResponseEntity.noContent().build();

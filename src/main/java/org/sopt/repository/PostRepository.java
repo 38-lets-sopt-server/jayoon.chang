@@ -2,27 +2,14 @@ package org.sopt.repository;
 
 import org.sopt.domain.BoardType;
 import org.sopt.domain.Post;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface PostRepository {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
-    Post save(Post post);
-
-    List<Post> findAllByPage(int page, int size);
-
-    List<Post> findByBoardType(BoardType boardType);
-
-    List<Post> findByBoardTypeAndPage(BoardType boardType, int page, int size);
-
-    int countAll();
-
-    Optional<Post> findById(Long id);
-
-    void delete(Long id);
-
-    Long generateId();
+    List<Post> findByBoardType(BoardType boardType, Pageable pageable);
 }
