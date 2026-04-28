@@ -1,14 +1,15 @@
 package org.sopt.exception;
 
 public abstract class NotFoundException extends RuntimeException {
-    private final String errorCode;
 
-    protected NotFoundException(String message, String errorCode){
+    private final ErrorCode errorCode;
+
+    protected NotFoundException(ErrorCode errorCode, String message){
         super(message);
         this.errorCode = errorCode;
     }
 
-    public String getErrorCode() {
+    public ErrorCode getErrorCode() {
         return errorCode;
     }
 }

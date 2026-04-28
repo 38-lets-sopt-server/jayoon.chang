@@ -13,6 +13,7 @@ public record PostResponse(
 ) {
 
     public static PostResponse from(Post post) {
+
         return new PostResponse(
                 post.getId(),
                 post.getTitle(),

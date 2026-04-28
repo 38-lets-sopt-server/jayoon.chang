@@ -1,6 +1,7 @@
 package org.sopt.validator;
 
 public class PostValidator {
+
     private static final int MAX_TITLE_LENGTH = 50;
 
     public static void validate(String title, String content) {

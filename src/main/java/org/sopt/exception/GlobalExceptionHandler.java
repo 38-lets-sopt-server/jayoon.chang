@@ -1,33 +1,36 @@
 package org.sopt.exception;
 
-import org.sopt.dto.response.ErrorResponse;
-import org.springframework.http.HttpStatus;
+import org.sopt.dto.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(PostNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlePostNotFound(PostNotFoundException e){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ErrorResponse(e.getErrorCode(), e.getMessage())
+    public ResponseEntity<ApiResponse<Void>> handlePostNotFound(PostNotFoundException e){
+
+        ErrorCode errorCode = e.getErrorCode();
+
+        return ResponseEntity.status(errorCode.getStatus()).body(
+                ApiResponse.failure(errorCode.getCode(), errorCode.getMessage())
         );
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                new ErrorResponse("INVALID_INPUT", e.getMessage())
+    public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(IllegalArgumentException e){
+
+        return ResponseEntity.status(ErrorCode.INVALID_INPUT.getStatus()).body(
+                ApiResponse.failure(ErrorCode.INVALID_INPUT.getCode(), ErrorCode.INVALID_INPUT.getMessage())
         );
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception e){
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new ErrorResponse("INTERNAL_SERVER_ERROR","서버 내부 오류가 발생했습니다")
+    public ResponseEntity<ApiResponse<Void>> handleException(Exception e){
+
+        return ResponseEntity.status(ErrorCode.INTERNAL_SERVER_ERROR.getStatus()).body(
+                ApiResponse.failure(ErrorCode.INTERNAL_SERVER_ERROR.getCode(), ErrorCode.INTERNAL_SERVER_ERROR.getMessage())
         );
     }
-
-
 }
