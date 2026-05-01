@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.sopt.domain.common.BaseTimeEntity;
-import org.sopt.validator.PostValidator;
 
 import java.time.LocalDateTime;
 
@@ -34,7 +33,6 @@ public class Post extends BaseTimeEntity {
     protected Post() {}  // JPA 기본 생성자
 
     public Post(String title, String content, User user, BoardType boardType) {
-        PostValidator.validate(title, content);
 
         this.title = title;
         this.content = content;
@@ -49,7 +47,6 @@ public class Post extends BaseTimeEntity {
     public BoardType getBoardType() { return boardType; }
 
     public void update(String title, String content) {
-        PostValidator.validate(title, content);
         this.title = title;
         this.content = content;
     }
