@@ -1,11 +1,15 @@
 package org.sopt.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.sopt.domain.common.BaseTimeEntity;
 import org.sopt.validator.PostValidator;
 
 import java.time.LocalDateTime;
 
+@SQLDelete(sql = "UPDATE post SET deleted_at = NOW() WHERE id = ?")
+@SQLRestriction("deleted_at IS NULL")
 @Entity
 public class Post extends BaseTimeEntity {
 
@@ -23,6 +27,9 @@ public class Post extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     protected Post() {}  // JPA 기본 생성자
 
