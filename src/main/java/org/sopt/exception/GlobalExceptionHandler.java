@@ -3,6 +3,7 @@ package org.sopt.exception;
 import org.sopt.dto.response.ApiResponse;
 import org.sopt.exception.common.BusinessException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -24,6 +25,20 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(ErrorCode.INVALID_INPUT.getStatus()).body(
                 ApiResponse.failure(ErrorCode.INVALID_INPUT.getCode(), ErrorCode.INVALID_INPUT.getMessage())
+        );
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse<Void>> handleValidationException(MethodArgumentNotValidException e){
+        String message = e.getBindingResult().getFieldErrors().stream()
+                .map(fieldError ->
+                        fieldError.getDefaultMessage() != null
+                                ? fieldError.getDefaultMessage()
+                                : "유효성 검증에 실패했습니다.")
+                .findFirst().orElse("유효성 검증에 실패했습니다.");
+
+        return ResponseEntity.status(ErrorCode.INVALID_INPUT.getStatus()).body(
+                ApiResponse.failure(ErrorCode.INVALID_INPUT.getCode(), message)
         );
     }
 

@@ -1,5 +1,6 @@
 package org.sopt.controller;
 
+import jakarta.validation.Valid;
 import org.sopt.domain.BoardType;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.request.UpdatePostRequest;
@@ -25,7 +26,7 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<CreatePostResponse>> createPost(
-            @RequestBody CreatePostRequest request
+           @Valid @RequestBody CreatePostRequest request
     ) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -54,7 +55,7 @@ public class PostController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> updatePost(@PathVariable Long id,
-                                        @RequestBody UpdatePostRequest request) {
+                                       @Valid @RequestBody UpdatePostRequest request) {
 
         postService.updatePost(id, request);
 

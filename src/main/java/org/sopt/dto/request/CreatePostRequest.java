@@ -1,12 +1,22 @@
 package org.sopt.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.sopt.domain.BoardType;
 
 // 게시글 작성 요청 (클라이언트 → 서버)
 public record CreatePostRequest(
         Long userId,
+
+        @NotBlank(message = "제목은 필수입니다.")
+        @Size(max=50, message = "제목은 50자를 초과할 수 없습니다.")
         String title,
+
+        @NotBlank(message = "내용은 필수입니다.")
         String content,
+
+        @NotBlank(message = "작성자는 필수입니다.")
         String author,
+
         BoardType boardType
 ) {}
