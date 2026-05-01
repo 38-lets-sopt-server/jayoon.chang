@@ -7,8 +7,8 @@ import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.request.UpdatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
-import org.sopt.exception.PostNotFoundException;
-import org.sopt.exception.UserNotFoundException;
+import org.sopt.exception.notfound.PostNotFoundException;
+import org.sopt.exception.notfound.UserNotFoundException;
 import org.sopt.repository.PostRepository;
 import org.sopt.repository.UserRepository;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +34,7 @@ public class PostService {
     public CreatePostResponse createPost(CreatePostRequest request) {
 
         User user = userRepository.findById(request.userId())
-                .orElseThrow(() -> new UserNotFoundException(request.userId()));
+                .orElseThrow(UserNotFoundException::new);
 
         Post post = new Post(request.title(), request.content(), user, request.boardType());
         postRepository.save(post);
@@ -63,7 +63,7 @@ public class PostService {
     public PostResponse getPost(Long id) {
 
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new PostNotFoundException(id));
+                .orElseThrow(PostNotFoundException::new);
 
         return PostResponse.from(post);
     }
@@ -73,7 +73,7 @@ public class PostService {
     public void updatePost(Long id, UpdatePostRequest request) {
 
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new PostNotFoundException(id));
+                .orElseThrow(PostNotFoundException::new);
 
         post.update(request.title(), request.content());
     }
@@ -83,7 +83,7 @@ public class PostService {
     public void deletePost(Long id) {
 
         postRepository.findById(id)
-                .orElseThrow(() -> new PostNotFoundException(id));
+                .orElseThrow(PostNotFoundException::new);
 
         postRepository.deleteById(id);
     }
