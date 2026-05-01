@@ -1,15 +1,17 @@
 package org.sopt.dto.response;
 
+import org.sopt.domain.BoardType;
 import org.sopt.domain.Post;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public record PostResponse(
         Long id,
         String title,
         String content,
-        String createdAt
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt,
+        BoardType boardType
 ) {
 
     public static PostResponse from(Post post) {
@@ -18,7 +20,9 @@ public record PostResponse(
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
-                post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                post.getCreatedAt(),
+                post.getUpdatedAt(),
+                post.getBoardType()
         );
     }
 }
