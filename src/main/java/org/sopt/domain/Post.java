@@ -33,7 +33,6 @@ public class Post extends BaseTimeEntity {
     protected Post() {}  // JPA 기본 생성자
 
     public Post(String title, String content, User user, BoardType boardType) {
-
         this.title = title;
         this.content = content;
         this.user = user;
