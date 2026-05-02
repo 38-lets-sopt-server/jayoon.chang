@@ -1,13 +1,16 @@
 package org.sopt.domain;
 
 import jakarta.persistence.*;
-import org.sopt.validator.PostValidator;
-import org.springframework.data.annotation.Id;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+import org.sopt.domain.common.BaseTimeEntity;
 
 import java.time.LocalDateTime;
 
+@SQLDelete(sql = "UPDATE post SET deleted_at = NOW() WHERE id = ?")
+@SQLRestriction("deleted_at IS NULL")
 @Entity
-public class Post {
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +20,6 @@ public class Post {
 
     private String content;   // 목록(미리보기), 상세(전체) 화면 — 내용
 
-    private LocalDateTime createdAt; // 목록, 상세 화면 — 작성 시각
-
     @Enumerated(EnumType.STRING)
     private BoardType boardType;
 
@@ -26,27 +27,25 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
     protected Post() {}  // JPA 기본 생성자
 
     public Post(String title, String content, User user, BoardType boardType) {
-        PostValidator.validate(title, content);
-
         this.title = title;
         this.content = content;
         this.user = user;
         this.boardType = boardType;
-        this.createdAt = LocalDateTime.now();
     }
 
     public Long getId() { return id; }
     public String getTitle() { return title; }
     public String getContent() { return content; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
     public User getUser() { return user; }
     public BoardType getBoardType() { return boardType; }
 
     public void update(String title, String content) {
-        PostValidator.validate(title, content);
         this.title = title;
         this.content = content;
     }
