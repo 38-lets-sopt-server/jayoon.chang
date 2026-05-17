@@ -19,7 +19,7 @@ public class UserService {
     @Transactional
     public User createUser(CreateUserRequest request){
 
-        User user = new User(request.nickname(), request.email());
+        User user = new User(request.nickname(), request.email(), request.password());
         return userRepository.save(user);
     }
 

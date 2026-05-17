@@ -1,7 +1,9 @@
 package org.sopt.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name="users")
 public class User {
@@ -14,22 +16,13 @@ public class User {
 
     private String email;
 
+    private String password;
+
     protected User() {}
 
-    public User(String nickname, String email){
+    public User(String nickname, String email, String password){
         this.nickname = nickname;
         this.email = email;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public String getNickname() {
-        return this.nickname;
-    }
-
-    public String getEmail() {
-        return this.email;
+        this.password = password;
     }
 }

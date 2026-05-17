@@ -3,9 +3,9 @@ spring:
     name: assignment
 
   datasource:
-    url: jdbc:mysql://localhost:3306/assignment
-    username: root
-    password: root
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -16,3 +16,9 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
     show-sql: true
+
+    security:
+      jwt:
+        secret: seopsopt-fighting
+        access-token-expires-in-seconds: 1800     # 30분
+        refresh-token-expires-in-seconds: 1209600 # 2주

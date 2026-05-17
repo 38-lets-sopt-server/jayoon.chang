@@ -9,5 +9,8 @@ public record CreateUserRequest (
     String nickname,
 
     @Schema(example = "gildong@test.com")
-    String email
+    String email,
+
+    @Schema(example = "비밀번호")
+    String password
 ) {}
